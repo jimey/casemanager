@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>患者列表</h1>
+
+<form method="get" class="search-form">
+  <input type="text" name="q" placeholder="按姓名/电话/证件号搜索" value="{{ q or '' }}" />
+  <button type="submit" class="btn">搜索</button>
+  <a href="{{ url_for('patients') }}" class="btn btn-secondary">清空</a>
+  <a href="{{ url_for('patient_new') }}" class="btn btn-primary right">新增患者</a>
+  <div class="clearfix"></div>
+  <small class="muted">共 {{ patients|length }} 条记录</small>
+  <hr>
+</form>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>姓名</th>
+      <th>性别</th>
+      <th>出生日期</th>
+      <th>电话</th>
+      <th>创建时间</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for p in patients %}
+      <tr>
+        <td>{{ p.id }}</td>
+        <td><a href="{{ url_for('patient_detail', pid=p.id) }}">{{ p.name }}</a></td>
+        <td>{{ p.gender or '-' }}</td>
+        <td>{{ p.date_of_birth or '-' }}</td>
+        <td>{{ p.phone or '-' }}</td>
+        <td>{{ p.created_at }}</td>
+        <td>
+          <a class="btn btn-small" href="{{ url_for('patient_detail', pid=p.id) }}">详情</a>
+          <a class="btn btn-small" href="{{ url_for('patient_edit', pid=p.id) }}">编辑</a>
+          <form method="post" action="{{ url_for('patient_delete', pid=p.id) }}" class="inline" onsubmit="return confirm('确认删除该患者及其所有就诊记录？');">
+            <button class="btn btn-danger btn-small" type="submit">删除</button>
+          </form>
+        </td>
+      </tr>
+    {% else %}
+      <tr><td colspan="7" class="muted">暂无数据</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
+

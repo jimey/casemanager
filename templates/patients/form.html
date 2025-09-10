@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}{{ '编辑患者' if patient else '新建患者' }}{% endblock %}
+{% block content %}
+<h1>{{ '编辑患者' if patient else '新建患者' }}</h1>
+<form method="post" class="form">
+  <label>姓名</label>
+  <input type="text" name="name" value="{{ patient.name if patient else '' }}" required />
+  <label>性别</label>
+  <select name="gender">
+    <option value="" {{ '' if patient and patient.gender else 'selected' }}>请选择</option>
+    <option value="男" {{ 'selected' if patient and patient.gender=='男' else '' }}>男</option>
+    <option value="女" {{ 'selected' if patient and patient.gender=='女' else '' }}>女</option>
+  </select>
+  <label>出生日期</label>
+  <input type="date" name="dob" value="{{ patient.dob.strftime('%Y-%m-%d') if patient and patient.dob else '' }}" />
+  <label>联系方式</label>
+  <input type="text" name="contact" value="{{ patient.contact if patient else '' }}" />
+  <label>地址</label>
+  <input type="text" name="address" value="{{ patient.address if patient else '' }}" />
+  <button type="submit">保存</button>
+  <a class="btn" href="{{ url_for('main.patients_list') }}">返回</a>
+ </form>
+{% endblock %}
+

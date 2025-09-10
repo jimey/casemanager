@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>患者详情</h1>
+
+<section class="card">
+  <div class="card-header">
+    <strong>{{ patient.name }}</strong>
+    <div class="right">
+      <a class="btn btn-small" href="{{ url_for('patient_edit', pid=patient.id) }}">编辑</a>
+      <form method="post" action="{{ url_for('patient_delete', pid=patient.id) }}" class="inline" onsubmit="return confirm('确认删除该患者及其所有就诊记录？');">
+        <button class="btn btn-danger btn-small" type="submit">删除</button>
+      </form>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="grid-2">
+      <div>
+        <div><span class="muted">性别：</span>{{ patient.gender or '-' }}</div>
+        <div><span class="muted">出生日期：</span>{{ patient.date_of_birth or '-' }}</div>
+        <div><span class="muted">电话：</span>{{ patient.phone or '-' }}</div>
+      </div>
+      <div>
+        <div><span class="muted">住址：</span>{{ patient.address or '-' }}</div>
+        <div><span class="muted">证件号：</span>{{ patient.id_number or '-' }}</div>
+        <div><span class="muted">创建时间：</span>{{ patient.created_at }}</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="card">
+  <div class="card-header">
+    <strong>就诊记录</strong>
+    <a class="btn btn-primary btn-small right" href="{{ url_for('visit_new', pid=patient.id) }}">新增就诊</a>
+  </div>
+  <div class="card-body">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>就诊日期</th>
+          <th>症状</th>
+          <th>诊断</th>
+          <th>治疗</th>
+          <th>医生</th>
+          <th>备注</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for v in visits %}
+          <tr>
+            <td>{{ v.id }}</td>
+            <td>{{ v.visit_date or '-' }}</td>
+            <td>{{ v.symptoms or '-' }}</td>
+            <td>{{ v.diagnosis or '-' }}</td>
+            <td>{{ v.treatment or '-' }}</td>
+            <td>{{ v.doctor or '-' }}</td>
+            <td>{{ v.notes or '-' }}</td>
+            <td>
+              <a class="btn btn-small" href="{{ url_for('visit_edit', vid=v.id) }}">编辑</a>
+              <form method="post" action="{{ url_for('visit_delete', vid=v.id) }}" class="inline" onsubmit="return confirm('确认删除该就诊记录？');">
+                <button class="btn btn-danger btn-small" type="submit">删除</button>
+              </form>
+            </td>
+          </tr>
+        {% else %}
+          <tr><td colspan="8" class="muted">暂无就诊记录</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}
+

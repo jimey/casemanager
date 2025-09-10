@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>{{ '新增患者' if mode == 'new' else '编辑患者' }}</h1>
+
+<form method="post" class="form">
+  <div class="grid-2">
+    <label>姓名*<input type="text" name="name" value="{{ form.get('name','') }}" required></label>
+    <label>性别
+      <select name="gender">
+        <option value="" {% if not form.get('gender') %}selected{% endif %}>- 选择 -</option>
+        <option value="男" {% if form.get('gender') == '男' %}selected{% endif %}>男</option>
+        <option value="女" {% if form.get('gender') == '女' %}selected{% endif %}>女</option>
+        <option value="其他" {% if form.get('gender') == '其他' %}selected{% endif %}>其他</option>
+      </select>
+    </label>
+  </div>
+
+  <div class="grid-2">
+    <label>出生日期<input type="date" name="date_of_birth" value="{{ form.get('date_of_birth','') }}"></label>
+    <label>电话<input type="text" name="phone" value="{{ form.get('phone','') }}"></label>
+  </div>
+
+  <label>住址<input type="text" name="address" value="{{ form.get('address','') }}"></label>
+
+  <label>证件号<input type="text" name="id_number" value="{{ form.get('id_number','') }}"></label>
+
+  <div class="actions">
+    <button type="submit" class="btn btn-primary">保存</button>
+    <a href="{{ url_for('patients') if mode=='new' else url_for('patient_detail', pid=patient.id) }}" class="btn btn-secondary">取消</a>
+  </div>
+</form>
+{% endblock %}
+

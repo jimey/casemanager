@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}{{ '编辑预约' if appt else '新建预约' }}{% endblock %}
+{% block content %}
+<h1>{{ '编辑预约' if appt else '新建预约' }}</h1>
+<form method="post" class="form">
+  <label>患者</label>
+  <select name="patient_id" required>
+    {% for p in patients %}
+      <option value="{{ p.id }}" {{ 'selected' if appt and appt.patient_id==p.id else '' }}>{{ p.name }}</option>
+    {% endfor %}
+  </select>
+  <label>医生</label>
+  <select name="doctor_id" required>
+    {% for d in doctors %}
+      <option value="{{ d.id }}" {{ 'selected' if appt and appt.doctor_id==d.id else '' }}>{{ d.name }}</option>
+    {% endfor %}
+  </select>
+  <label>时间</label>
+  <input type="datetime-local" name="scheduled_at" value="{{ appt.scheduled_at.strftime('%Y-%m-%dT%H:%M') if appt else '' }}" required />
+  <label>状态</label>
+  <select name="status">
+    {% set status = appt.status if appt else 'scheduled' %}
+    <option value="scheduled" {{ 'selected' if status=='scheduled' else '' }}>待就诊</option>
+    <option value="completed" {{ 'selected' if status=='completed' else '' }}>已完成</option>
+    <option value="cancelled" {{ 'selected' if status=='cancelled' else '' }}>已取消</option>
+  </select>
+  <label>原因</label>
+  <input type="text" name="reason" value="{{ appt.reason if appt else '' }}" />
+  <button type="submit">保存</button>
+  <a class="btn" href="{{ url_for('main.appointments_list') }}">返回</a>
+ </form>
+{% endblock %}
+

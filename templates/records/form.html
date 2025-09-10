@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}新建病例{% endblock %}
+{% block content %}
+<h1>为 {{ patient.name }} 添加病例</h1>
+<form method="post" class="form">
+  <label>医生</label>
+  <select name="doctor_id">
+    <option value="">未指定</option>
+    {% for d in doctors %}
+      <option value="{{ d.id }}">{{ d.name }} - {{ d.department or '' }}</option>
+    {% endfor %}
+  </select>
+  <label>诊断</label>
+  <input type="text" name="diagnosis" />
+  <label>备注</label>
+  <textarea name="notes" rows="5"></textarea>
+  <button type="submit">保存</button>
+  <a class="btn" href="{{ url_for('main.patients_detail', pid=patient.id) }}">返回</a>
+ </form>
+{% endblock %}
+

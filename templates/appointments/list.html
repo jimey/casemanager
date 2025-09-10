@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}预约列表{% endblock %}
+{% block content %}
+<h1>预约</h1>
+<p><a class="btn" href="{{ url_for('main.appointments_new') }}">+ 新建预约</a></p>
+<table>
+  <thead><tr><th>ID</th><th>患者</th><th>医生</th><th>时间</th><th>状态</th><th>原因</th><th>操作</th></tr></thead>
+  <tbody>
+    {% for a in appts %}
+    <tr>
+      <td>{{ a.id }}</td>
+      <td>{{ a.patient.name }}</td>
+      <td>{{ a.doctor.name }}</td>
+      <td>{{ a.scheduled_at.strftime('%Y-%m-%d %H:%M') }}</td>
+      <td>{{ a.status }}</td>
+      <td>{{ a.reason or '-' }}</td>
+      <td>
+        <a href="{{ url_for('main.appointments_edit', aid=a.id) }}">编辑</a>
+        <form method="post" action="{{ url_for('main.appointments_delete', aid=a.id) }}" class="inline" onsubmit="return confirm('确认删除?')">
+          <button class="link danger" type="submit">删除</button>
+        </form>
+      </td>
+    </tr>
+    {% else %}
+    <tr><td colspan="7">暂无预约</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
+

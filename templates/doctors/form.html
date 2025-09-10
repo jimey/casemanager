@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}{{ '编辑医生' if doctor else '新建医生' }}{% endblock %}
+{% block content %}
+<h1>{{ '编辑医生' if doctor else '新建医生' }}</h1>
+<form method="post" class="form">
+  <label>姓名</label>
+  <input type="text" name="name" value="{{ doctor.name if doctor else '' }}" required />
+  <label>科室</label>
+  <input type="text" name="department" value="{{ doctor.department if doctor else '' }}" />
+  <label>职称</label>
+  <input type="text" name="title" value="{{ doctor.title if doctor else '' }}" />
+  <button type="submit">保存</button>
+  <a class="btn" href="{{ url_for('main.doctors_list') }}">返回</a>
+ </form>
+{% endblock %}
+

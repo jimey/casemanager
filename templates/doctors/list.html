@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}医生列表{% endblock %}
+{% block content %}
+<h1>医生</h1>
+<p><a class="btn" href="{{ url_for('main.doctors_new') }}">+ 新建医生</a></p>
+<table>
+  <thead><tr><th>ID</th><th>姓名</th><th>科室</th><th>职称</th><th>操作</th></tr></thead>
+  <tbody>
+    {% for d in doctors %}
+    <tr>
+      <td>{{ d.id }}</td>
+      <td>{{ d.name }}</td>
+      <td>{{ d.department or '-' }}</td>
+      <td>{{ d.title or '-' }}</td>
+      <td>
+        <a href="{{ url_for('main.doctors_edit', did=d.id) }}">编辑</a>
+        <form method="post" action="{{ url_for('main.doctors_delete', did=d.id) }}" class="inline" onsubmit="return confirm('确认删除?')">
+          <button class="link danger" type="submit">删除</button>
+        </form>
+      </td>
+    </tr>
+    {% else %}
+    <tr><td colspan="5">暂无医生</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
+

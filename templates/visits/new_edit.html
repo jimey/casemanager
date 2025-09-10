@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>{{ '新增就诊记录' if mode == 'new' else '编辑就诊记录' }}</h1>
+
+<div class="muted">患者：<a href="{{ url_for('patient_detail', pid=patient.id) }}">{{ patient.name }}</a></div>
+
+<form method="post" class="form">
+  <div class="grid-2">
+    <label>就诊日期<input type="date" name="visit_date" value="{{ form.get('visit_date','') }}"></label>
+    <label>医生<input type="text" name="doctor" value="{{ form.get('doctor','') }}"></label>
+  </div>
+
+  <label>症状<textarea name="symptoms" rows="3">{{ form.get('symptoms','') }}</textarea></label>
+  <label>诊断<textarea name="diagnosis" rows="3">{{ form.get('diagnosis','') }}</textarea></label>
+  <label>治疗<textarea name="treatment" rows="3">{{ form.get('treatment','') }}</textarea></label>
+  <label>备注<textarea name="notes" rows="3">{{ form.get('notes','') }}</textarea></label>
+
+  <div class="actions">
+    <button type="submit" class="btn btn-primary">保存</button>
+    <a href="{{ url_for('patient_detail', pid=patient.id) }}" class="btn btn-secondary">取消</a>
+  </div>
+</form>
+{% endblock %}
+

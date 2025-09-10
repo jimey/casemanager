@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}首页 - 病例管理{% endblock %}
+{% block content %}
+<h1>概览</h1>
+<div class="stats">
+  <div class="stat">患者：<strong>{{ patient_count }}</strong></div>
+  <div class="stat">医生：<strong>{{ doctor_count }}</strong></div>
+  <div class="stat">预约：<strong>{{ appt_count }}</strong></div>
+  </div>
+<h2>最近病例</h2>
+<table>
+  <thead><tr><th>ID</th><th>患者</th><th>医生</th><th>诊断</th><th>时间</th></tr></thead>
+  <tbody>
+    {% for r in recent_records %}
+    <tr>
+      <td>{{ r.id }}</td>
+      <td><a href="{{ url_for('main.patients_detail', pid=r.patient.id) }}">{{ r.patient.name }}</a></td>
+      <td>{{ r.doctor.name if r.doctor else '-' }}</td>
+      <td>{{ r.diagnosis or '-' }}</td>
+      <td>{{ r.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+    </tr>
+    {% else %}
+    <tr><td colspan="5">暂无记录</td></tr>
+    {% endfor %}
+  </tbody>
+ </table>
+{% endblock %}
+
